@@ -55,9 +55,11 @@ physical_interface_mappings = {{required "A valid .Values.cp_physical_network re
 enable_vxlan = false
 
 [ovs]
+{{- if .Values.ovs }}
+    {{- range $key, $value := .Values.ovs }}
+{{ $key }} = {{ $value }}
+    {{- end }}
+{{- else }}
 bridge_mappings = {{required "A valid .Values.cp_physical_network required!" .Values.cp_physical_network}}:br-{{required "A valid .Values.cp_network_interface required!" .Values.cp_network_interface}}
 enable_tunneling=False
-
-
-
-
+{{- end }}
