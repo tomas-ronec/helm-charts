@@ -15,6 +15,10 @@ function process_config {
 
 
 function _start_application {
+    # TODO: Move to image
+    apt update
+    apt install -y openvswitch-switch
+
     until ! pgrep -f /var/lib/openstack/bin/neutron-openvswitch-agent; do
       echo "Waiting to be the only highlander"
       sleep 5

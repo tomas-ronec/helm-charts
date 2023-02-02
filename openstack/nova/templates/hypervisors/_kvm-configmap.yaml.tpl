@@ -22,14 +22,19 @@ data:
     track_instance_changes = {{ .Values.scheduler.track_instance_changes }}
 
     [libvirt]
-    connection_uri = "qemu+tcp://127.0.0.1/system"
-    iscsi_use_multipath=True
+    connection_uri = "qemu:///system"
+    volume_use_multipath = True
     #inject_key=True
     #inject_password = True
     #live_migration_downtime = 500
     #live_migration_downtime_steps = 10
     #live_migration_downtime_delay = 75
     #live_migration_flag = VIR_MIGRATE_UNDEFINE_SOURCE, VIR_MIGRATE_PEER2PEER, VIR_MIGRATE_LIVE, VIR_MIGRATE_TUNNELLED
+
+    [placement]
+    auth_url = https://{{include "keystone_api_endpoint_host_public" .}}:{{ .Values.global.keystone_api_port_public | default "443" }}/v3
+    valid_interfaces = public
+
   libvirtd.conf: |
     listen_tcp = 1
     listen_tls = 0

@@ -146,9 +146,6 @@ spec:
             name: libvirt
           - mountPath: /var/run
             name: run
-          - mountPath: /lib/modules
-            name: modules
-            readOnly: true
           - mountPath: /etc/nova
             name: etcnova
           - mountPath: /etc/nova/nova.conf
@@ -183,13 +180,16 @@ spec:
           - "/container.init/neutron-openvswitch-agent-start"
           env:
           volumeMounts:
-          - mountPath: /var/run/
-            name: run
           - mountPath: /neutron-etc
             name: neutron-etc
           - mountPath: /container.init
             name: nova-container-init
             defaultMode: 0777
+          - mountPath: /var/run
+            name: run
+          - mountPath: /lib/modules
+            name: modules
+            readOnly: true
         - name: ovs
           image: {{ required ".Values.global.registry is missing" .Values.global.registry}}/loci-neutron-openvswitch:{{.Values.imageVersionNeutron | required "Please set nova.imageVersionNeutron or similar" }}
           imagePullPolicy: IfNotPresent
@@ -200,7 +200,7 @@ spec:
           env:
           {{- include "k8s_entrypoint_env" . | indent 10 }}
           volumeMounts:
-          - mountPath: /var/run/
+          - mountPath: /var/run
             name: run
           - mountPath: /lib/modules
             name: modules
@@ -218,7 +218,7 @@ spec:
           env:
           {{- include "k8s_entrypoint_env" . | indent 10 }}
           volumeMounts:
-          - mountPath: /var/run/
+          - mountPath: /var/run
             name: run
           - mountPath: /container.init
             name: nova-container-init
