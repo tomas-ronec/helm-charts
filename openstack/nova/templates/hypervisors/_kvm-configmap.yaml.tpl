@@ -31,8 +31,33 @@ data:
     #live_migration_downtime_delay = 75
     #live_migration_flag = VIR_MIGRATE_UNDEFINE_SOURCE, VIR_MIGRATE_PEER2PEER, VIR_MIGRATE_LIVE, VIR_MIGRATE_TUNNELLED
 
+    [keystone_authtoken]
+    www_authenticate_uri = https://{{include "keystone_api_endpoint_host_public" .}}/v3
+    auth_url = https://{{include "keystone_api_endpoint_host_public" .}}/v3
+    memcached_servers =
+    valid_interfaces = public
+
+    [service_user]
+    auth_url = https://{{include "keystone_api_endpoint_host_public" .}}/v3
+    auth_interface = public
+
     [placement]
     auth_url = https://{{include "keystone_api_endpoint_host_public" .}}:{{ .Values.global.keystone_api_port_public | default "443" }}/v3
+    valid_interfaces = public
+
+    [barbican]
+    backend = barbican
+    auth_endpoint = https://{{include "keystone_api_endpoint_host_public" .}}:{{ .Values.global.keystone_api_port_public | default "443" }}/v3
+
+    [cinder]
+    auth_url = https://{{include "keystone_api_endpoint_host_public" .}}:{{ .Values.global.keystone_api_port_public | default "443" }}/v3
+    valid_interfaces = public
+
+    [neutron]
+    auth_url = https://{{include "keystone_api_endpoint_host_public" .}}:{{ .Values.global.keystone_api_port_public | default "443" }}/v3
+    valid_interfaces = public
+
+    [glance]
     valid_interfaces = public
 
   libvirtd.conf: |
