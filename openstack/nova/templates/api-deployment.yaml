@@ -110,10 +110,6 @@ spec:
               name: etcnova
             - mountPath: /etc/nova/nova.conf
               name: nova-etc
-              subPath: nova.conf
-              readOnly: true
-            - mountPath: /etc/nova/nova-api.conf
-              name: nova-etc
               subPath: nova-api.conf
               readOnly: true
             - mountPath: /etc/nova/api-paste.ini
